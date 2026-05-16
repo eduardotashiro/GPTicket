@@ -1,24 +1,17 @@
 /**
- * Gerencia a aplicação de textos no editor (textarea, contenteditable, etc)
+ * Gerencia a aplicação de textos no editor (contenteditable)
  */
 import { getActiveContainer } from "./domUtils";
 
 /**
- * Encontra o editor ativo na página
+ * Encuentra el editor activo en la página
  * @returns {HTMLElement | null}
  */
-function encontrarEditor() {
-    // Tenta encontrar editor rich text (nota no Movidesk)
-    // painel = contextual
-    // editor = global
+function findEditor() {
     const containerAtivo = getActiveContainer();
-
     if (!containerAtivo) return null;
 
-    const editor = containerAtivo.querySelector(".fr-element[contenteditable='true']");
-    const textarea = containerAtivo.querySelector("TEXTAREA");
-
-    return editor || textarea || null;
+    return containerAtivo.querySelector(".fr-element[contenteditable='true']");
 }
 
 /**
@@ -26,50 +19,26 @@ function encontrarEditor() {
  * @param {string} texto - Texto a inserir
  */
 export function aplicarTextoNoEditor(texto) {
-    const elemento = encontrarEditor();
-    console.log("ELEMENTO:", elemento);
-    if (!elemento) return;
-
-    const editor = elemento.matches("[contenteditable='true']")
-        ? elemento
-        : null;
-
-    const textarea = elemento.tagName === "TEXTAREA"
-        ? elemento
-        : null;
-
-
-    if (editor) {
-        // Editor rich text (HTML) 
-        let htmlAssinatura = "";
-
-        const assinatura = editor.querySelector(".signature");
-        if (assinatura) {
-            const anterior = assinatura.previousElementSibling;
-
-            // Se houver um separador (--) antes da assinatura, preserva
-            if (
-                anterior &&
-                anterior.tagName === "P" &&
-                anterior.innerText.trim() === "--"
-            ) {
-                htmlAssinatura = anterior.outerHTML + assinatura.outerHTML;
-            } else {
-                htmlAssinatura = assinatura.outerHTML;
-            }
-        }
-
-        // Insere novo texto + assinatura
-        editor.innerHTML = texto.replace(/\n/g, "<br>") + htmlAssinatura; //talvez tirar no futuro
-
-    } else if (textarea) {
-        //Textarea simples (texto plano)
-        textarea.value = texto;
-    } else {
-        // Fallback: copia pro clipboard 
+    const editor = findEditor();
+    if (!editor) {
         navigator.clipboard.writeText(texto);
-        alert("Nenhum editor encontrado. Texto copiado para a área de transferência!");
+        alert("Editor não encontrado. Texto copiado!");
+        return;
     }
+
+    let htmlAssinatura = "";
+    const assinatura = editor.querySelector(".signature");
+
+    if (assinatura) {
+        const anterior = assinatura.previousElementSibling;
+        if (anterior?.innerText.trim() === "--") {
+            htmlAssinatura = anterior.outerHTML + assinatura.outerHTML;
+        } else {
+            htmlAssinatura = assinatura.outerHTML;
+        }
+    }
+
+    editor.innerHTML = texto.replace(/\n/g, "<br>") + htmlAssinatura;
 }
 
 /**
@@ -77,50 +46,16 @@ export function aplicarTextoNoEditor(texto) {
  * @returns {string}
  */
 export function obterTextoDoEditor() {
-    const elemento = encontrarEditor();
-
-    if (!elemento) return "";
-
-    const editor = elemento.classList.contains("fr-element")
-        ? elemento
-        : null;
-
-    const textarea = elemento.tagName === "TEXTAREA"
-        ? elemento
-        : null;
-
-    if (editor) {
-        return editor.innerText;
-    }
-
-    if (textarea) {
-        return textarea.value;
-    }
-
-    return "";
+    const editor = findEditor();
+    return editor?.innerText || "";
 }
 
 /**
  * Limpa o editor (remove todo conteúdo)
  */
 export function limparEditor() {
-    const elemento = encontrarEditor();
-
-    if (!elemento) return;
-
-    const editor = elemento.matches("[contenteditable='true']")
-        ? elemento
-        : null;
-
-    const textarea = elemento.tagName === "TEXTAREA"
-        ? elemento
-        : null;
-
+    const editor = findEditor();
     if (editor) {
         editor.innerHTML = "";
-    }
-
-    if (textarea) {
-        textarea.value = "";
     }
 }
