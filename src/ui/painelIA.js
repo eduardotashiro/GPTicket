@@ -3,10 +3,9 @@
  * Crea el panel de análisis de IA con datos simulados.
  * Incluye: intención, satisfacción, churn,  resumen y sugerencias.
  */
- 
 
 import { copyToClipboard, copyLines } from "../utils/clipboardUtils";
-import { Icons } from "../utils/SVGIcons";
+import { icons } from "../utils/svgIcons";
 import { criarScoreCirculo, obterCorScore } from "../utils/scoreCirculo"
 import { aplicarTextoNoEditor } from "../utils/editorManager";
 import { getActiveContainer } from "../utils/domUtils";
@@ -77,8 +76,8 @@ export function adicionarPainelIA(dados = {}) {
             <div style="padding:10px 14px;display:flex;justify-content:space-between;align-items:center;color:#6c4cff;font-weight:bold;font-size:14px;">
                 <span>✨ Análise gerada por IA</span>
                 <button id="toggle-ia" style="border:none;background:none;color:#6c4cff;cursor:pointer;font-weight:bold;display:flex;align-items:center;gap:6px;font-size:13px;">
-                    ${Icons.olhoFechado()}
-                    ${Icons.olhoAberto()}
+                    ${icons.closedEye()}
+                    ${icons.openEye()}
                     <span id="texto-toggle">Ver análise</span>
                 </button>
             </div>
@@ -92,7 +91,7 @@ export function adicionarPainelIA(dados = {}) {
                     <!-- CARD CLIENTE -->
                     <div style="border:1px solid #e0e0e0;border-radius:8px;padding:14px;">
                         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#555;font-weight:600;margin-bottom:12px;">
-                            ${Icons.usuario()}
+                            ${icons.user()}
                             Cliente
                         </div>
 
@@ -101,7 +100,7 @@ export function adicionarPainelIA(dados = {}) {
                             <span style="color:#999;width:90px;flex-shrink:0;padding-top:2px;">Intenção</span>
                             <div style="display:flex;align-items:flex-start;gap:6px;flex:1;">
                                 <span id="texto-intencao" style="color:#222;font-weight:600;line-height:1.4;flex:1;">${dadosFinais.intencao}</span>
-                                <button id="btn-copiar-intencao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;flex-shrink:0;" title="Copiar">${Icons.copiar()}</button>
+                                <button id="btn-copiar-intencao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;flex-shrink:0;" title="Copiar">${icons.copy()}</button>
                             </div>
                         </div>
 
@@ -127,11 +126,11 @@ export function adicionarPainelIA(dados = {}) {
                     <!-- CARD RESUMO -->
                     <div style="border:1px solid #e0e0e0;border-radius:8px;padding:14px;">
                         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#555;font-weight:600;margin-bottom:12px;">
-                            ${Icons.lista()}
+                            ${icons.list()}
                             Resumo da solicitação
                             <div style="margin-left:auto;display:flex;gap:6px;">
-                                <button id="btn-refresh-resumo" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Atualizar">${Icons.refresh()}</button>
-                                <button id="btn-copiar-resumo" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Copiar resumo">${Icons.copiar()}</button>
+                                <button id="btn-refresh-resumo" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Atualizar">${icons.refresh()}</button>
+                                <button id="btn-copiar-resumo" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Copiar resumo">${icons.copy()}</button>
                             </div>
                         </div>
                         <ul style="list-style:none;padding:0;margin:0;font-size:13px;color:#333;">
@@ -144,12 +143,12 @@ export function adicionarPainelIA(dados = {}) {
                 <!-- CARD SUGESTÃO DE RESPOSTA -->
                 <div style="border:1px solid #e0e0e0;border-radius:8px;padding:14px;margin:0 12px 12px 12px;">
                     <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#555;font-weight:600;margin-bottom:10px;">
-                        ${Icons.mensagem()}
+                        ${icons.message()}
                         Sugestão de resposta
                         <div style="margin-left:auto;display:flex;gap:6px;">
-                            <button id="btn-refresh-sugestao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Atualizar">${Icons.refresh()}</button>
-                            <button id="btn-copiar-sugestao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Copiar sugestão">${Icons.copiar()}</button>
-                            <button id="btn-enviar-sugestao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Usar sugestão">${Icons.enviar()}</button>
+                            <button id="btn-refresh-sugestao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Atualizar">${icons.refresh()}</button>
+                            <button id="btn-copiar-sugestao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Copiar sugestão">${icons.copy()}</button>
+                            <button id="btn-enviar-sugestao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;" title="Usar sugestão">${icons.send()}</button>
                         </div>
                     </div>
                     <p id="texto-sugestao" style="margin:0;font-size:13px;color:#333;line-height:1.5;">${dadosFinais.sugestao}</p>
@@ -172,7 +171,7 @@ export function adicionarPainelIA(dados = {}) {
     anexarEventosDoPainel(painel, dadosFinais);
 }
 
-function anexarEventosDoPainel(painel, dados) { 
+function anexarEventosDoPainel(painel, dados) {
     const btnCopiarIntencao = painel.querySelector("#btn-copiar-intencao");
     const btnCopiarResumo = painel.querySelector("#btn-copiar-resumo");
     const btnRefreshResumo = painel.querySelector("#btn-refresh-resumo");
@@ -212,8 +211,8 @@ function anexarEventosDoPainel(painel, dados) {
     // Toggle ocultar/mostrar
     const toggle = painel.querySelector("#toggle-ia");
     const wrapper = painel.querySelector("#wrapper-colapsavel");
-    const iconeAberto = painel.querySelector("#icone-olho-aberto");
-    const iconeFechado = painel.querySelector("#icone-olho-fechado");
+    const iconeAberto = painel.querySelector("#icon-open-eye");
+    const iconeFechado = painel.querySelector("#icon-closed-eye");
     const textoToggle = painel.querySelector("#texto-toggle");
 
     let visivel = false;
