@@ -1,61 +1,38 @@
-/**
- * Gerencia a aplicação de textos no editor (contenteditable)
- */
 import { getActiveContainer } from "./domUtils";
 
-/**
+/***
  * Encuentra el editor activo en la página
  * @returns {HTMLElement | null}
  */
 function findEditor() {
-    const containerAtivo = getActiveContainer();
-    if (!containerAtivo) return null;
-
-    return containerAtivo.querySelector(".fr-element[contenteditable='true']");
+    const activeContainer = getActiveContainer();
+    if (!activeContainer) return null;
+    return activeContainer.querySelector(".fr-element[contenteditable='true']");
 }
 
-/**
- * Aplica texto no editor, preservando assinatura se existir
+/***
+ * Aplica el texto al editor, conservando las firmas si existen
  * @param {string} texto - Texto a inserir
  */
-export function aplicarTextoNoEditor(texto) {
+export function applyTextToEditor(text) {
     const editor = findEditor();
     if (!editor) {
-        navigator.clipboard.writeText(texto);
+        navigator.clipboard.writeText(text);
         alert("Editor não encontrado. Texto copiado!");
         return;
     }
 
-    let htmlAssinatura = "";
-    const assinatura = editor.querySelector(".signature");
+    let signatureHTML = "";
+    const signature = editor.querySelector(".signature");
 
-    if (assinatura) {
-        const anterior = assinatura.previousElementSibling;
-        if (anterior?.innerText.trim() === "--") {
-            htmlAssinatura = anterior.outerHTML + assinatura.outerHTML;
+    if (signature) {
+        const separator = signature.previousElementSibling;
+        if (separator?.innerText.trim() === "--") {
+            signatureHTML = separator.outerHTML + signature.outerHTML;
         } else {
-            htmlAssinatura = assinatura.outerHTML;
+            signatureHTML = signature.outerHTML;
         }
     }
 
-    editor.innerHTML = texto.replace(/\n/g, "<br>") + htmlAssinatura;
-}
-
-/**
- * Obtém o texto atual do editor
- * @returns {string}
- */
-export function obterTextoDoEditor() {
-    const editor = findEditor();
-    return editor?.innerText || "";
-}
-
-/**
- * Limpa o editor (remove todo conteúdo)
- */
-export function limparEditor() {
-    const editor = findEditor();
-    if (editor) {
-        editor.innerHTML = "";
-    }
+    editor.innerHTML = text.replace(/\n/g, "<br>") + signatureHTML;
 }

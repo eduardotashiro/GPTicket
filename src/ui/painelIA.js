@@ -7,7 +7,7 @@
 import { copyToClipboard, copyLines } from "../utils/clipboardUtils";
 import { icons } from "../utils/svgIcons";
 import { criarScoreCirculo, obterCorScore } from "../utils/scoreCirculo"
-import { aplicarTextoNoEditor } from "../utils/editorManager";
+import { applyTextToEditor } from "../utils/editorManager";
 import { getActiveContainer } from "../utils/domUtils";
 /**
  * Función de devolución de llamada que se ejecutará cuando el usuario haga clic en "Usar sugerencia".
@@ -203,7 +203,7 @@ function anexarEventosDoPainel(painel, dados) {
 
     if (btnEnviarSugestao) {
         btnEnviarSugestao.onclick = () => {
-            aplicarTextoNoEditor(dados.sugestao);
+            applyTextToEditor(dados.sugestao);
             if (onUsarSugestao) onUsarSugestao();
         };
     }

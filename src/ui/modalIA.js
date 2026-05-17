@@ -3,7 +3,7 @@
  * (expandir, resumir, simplificar, etc)
  */
 
-import { aplicarTextoNoEditor } from "../utils/editorManager"
+import { applyTextToEditor } from "../utils/editorManager"
 
 const TEXTOS_GERADOS = {
     expandir: "Texto expandido mockado...",
@@ -95,7 +95,7 @@ export function abrirModal(acao, tom) {
     };
 
     substituir.onclick = () => {
-        aplicarTextoNoEditor(textoGerado);
+        applyTextToEditor(textoGerado);
         overlay.remove();
     };
 
