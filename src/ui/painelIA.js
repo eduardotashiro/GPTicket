@@ -6,7 +6,6 @@
 
 import { copyToClipboard, copyLines } from "../utils/clipboardUtils";
 import { icons } from "../utils/svgIcons";
-import { criarScoreCirculo, obterCorScore } from "../utils/scoreCirculo"
 import { applyTextToEditor } from "../utils/editorManager";
 import { getActiveContainer } from "../utils/domUtils";
 /**
@@ -27,14 +26,10 @@ export function definirCallbackSugestao(callback) {
  */
 const dadosPadroes = {
     intencao: "Cliente questiona ausência de repasse financeiro e solicita prazo para regularização.",
-    satisfacao: 5,
-    churn: 7,
     resumo: [
         "Cliente relata que o repasse financeiro acordado não foi realizado no prazo",
         "Valor do repasse pendente não foi especificado, aguarda confirmação do financeiro",
         "Cliente solicita posicionamento urgente sobre data de pagamento",
-        "Sem registro de contato anterior sobre o atraso no sistema",
-        "Equipe financeira será acionada para verificar status do repasse",
     ],
     sugestao: "Prezado cliente,\nAgradecemos o contato bla bla bla bla ",
 };
@@ -52,12 +47,9 @@ export function adicionarPainelIA(dados = {}) {
 
     // Evite la duplicación.
     if (alvo.parentElement.querySelector(".painel-ia")) return;
+
     // Merge datos (custom + padrão)
     const dadosFinais = { ...dadosPadroes, ...dados };
-
-    //  Cores baseadas em satisfação/churn 
-    const corSatisfacao = obterCorScore(dadosFinais.satisfacao, false);
-    const corChurn = obterCorScore(dadosFinais.churn, true);
 
     // Itens do resumo como HTML 
     const itensResumo = dadosFinais.resumo.map(item =>
@@ -94,7 +86,7 @@ export function adicionarPainelIA(dados = {}) {
                             ${icons.user()}
                             Cliente
                         </div>
-
+                    
                         <!-- Intenção -->
                         <div style="display:flex;gap:10px;margin-bottom:10px;font-size:13px;align-items:flex-start;">
                             <span style="color:#999;width:90px;flex-shrink:0;padding-top:2px;">Intenção</span>
@@ -103,26 +95,8 @@ export function adicionarPainelIA(dados = {}) {
                                 <button id="btn-copiar-intencao" style="border:none;background:none;cursor:pointer;color:#aaa;padding:2px;flex-shrink:0;" title="Copiar">${icons.copy()}</button>
                             </div>
                         </div>
-
-                        <!-- Satisfação -->
-                        <div style="display:flex;gap:10px;margin-bottom:8px;font-size:13px;align-items:center;">
-                            <span style="color:#999;width:90px;flex-shrink:0;">Satisfação</span>
-                            <span style="color:#222;font-weight:600;display:flex;align-items:center;gap:6px;">
-                                ${criarScoreCirculo(dadosFinais.satisfacao, 10, corSatisfacao)}
-                                ${dadosFinais.satisfacao}/10
-                            </span>
-                        </div>
-
-                        <!-- Churn -->
-                        <div style="display:flex;gap:10px;font-size:13px;align-items:center;">
-                            <span style="color:#999;width:90px;flex-shrink:0;">Risco de churn</span>
-                            <span style="color:#222;font-weight:600;display:flex;align-items:center;gap:6px;">
-                                ${criarScoreCirculo(dadosFinais.churn, 10, corChurn)}
-                                ${dadosFinais.churn}/10
-                            </span>
-                        </div>
                     </div>
-
+                    
                     <!-- CARD RESUMO -->
                     <div style="border:1px solid #e0e0e0;border-radius:8px;padding:14px;">
                         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#555;font-weight:600;margin-bottom:12px;">
