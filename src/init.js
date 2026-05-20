@@ -6,9 +6,9 @@
  * - Detecta mudanças de página (SPA) e recarrega
  */
 
-import { adicionarBotaoIA, definirCallbackAcao } from "./ui/botaoIA";
-import { adicionarPainelIA, definirCallbackSugestao } from "./ui/painelIA";
-import { abrirModal } from "./ui/modalIA";
+import { adicionarBotaoIA, definirCallbackAcao } from "./components/button";
+import { adicionarPainelIA, definirCallbackSugestao } from "./components/panel";
+import { abrirModal } from "./components/modal";
 
 // ═══════════════════════════════════════
 // INICIALIZAÇÃO PRINCIPAL
@@ -59,27 +59,6 @@ const intervaloSPA = setInterval(() => {
         }, 800);
     }
 }, 500);
-
-// ═══════════════════════════════════════
-// DETECÇÃO DE MUDANÇAS NO DOM
-// ═══════════════════════════════════════
-
-/**
- * MutationObserver detecta quando o DOM muda
- * Útil quando componentes são injetados dinamicamente
- */
-
-// const observer = new MutationObserver(() => {
-//     iniciarGPTicket();
-// });
-
-// observer.observe(document.body, {
-//     childList: true,
-//     subtree: true,
-// });
-// ═══════════════════════════════════════
-// INICIALIZAÇÃO NA CARGA
-// ═══════════════════════════════════════
 
 iniciarGPTicket();
 
