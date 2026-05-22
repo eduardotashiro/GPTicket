@@ -1,7 +1,9 @@
+/* Contenedor principal */
 .ia-wrapper {
     position: relative;
 }
 
+/* dropdown principal */
 .ia-dropdown {
     position: absolute;
     top: calc(100% + 6px);
@@ -16,17 +18,19 @@
     border: 1px solid #dcdcdc;
     border-radius: 8px;
 
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 
     padding: 6px 0;
 
-    z-index: 20; /* <<< reduz drasticamente */
+    z-index: 20;
 }
 
+/* Abre el dropdown */
 .ia-dropdown.ativo {
     display: flex;
 }
 
+/* Items del dropdown*/
 .ia-dropdown-item {
     width: 100%;
 
@@ -42,20 +46,22 @@
     cursor: pointer;
 
     font-size: 14px;
-
     transition: background 0.2s;
 
     text-align: left;
 }
 
+/* Efecto hover en los items */
 .ia-dropdown-item:hover {
     background: #f5f5f5;
 }
 
+/* submenú de tonos */
 .ia-submenu-wrapper {
     position: relative;
 }
 
+/* Submenú oculto por defecto */
 .ia-submenu {
     position: absolute;
 
@@ -72,17 +78,24 @@
     border: 1px solid #dcdcdc;
     border-radius: 8px;
 
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 
     padding: 6px 0;
 
     z-index: 21;
 }
 
+/* Abre el submenú al pasar el mouse */
 .ia-submenu-wrapper:hover .ia-submenu {
     display: flex;
 }
 
+/* Abre el submenú cuando tiene la clase ativo */
+.ia-submenu.ativo {
+    display: flex;
+}
+
+/* Flecha que indica que hay submenú */
 .ia-seta {
     margin-left: auto;
     color: #999;

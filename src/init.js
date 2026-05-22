@@ -6,7 +6,7 @@
  * - Detecta mudanças de página (SPA) e recarrega
  */
 
-import { adicionarBotaoIA, definirCallbackAcao } from "./components/button";
+import { addAIButton, defineActionCallback } from "./components/button";
 import { adicionarPainelIA, definirCallbackSugestao } from "./components/panel";
 import { abrirModal } from "./components/modal";
 
@@ -21,7 +21,7 @@ function iniciarGPTicket() {
     console.log("[GPTicket] Inicializando...");
 
     // Define o callback do botão: quando usuário clica numa ação, abre modal
-    definirCallbackAcao((acao, tom) => {
+    defineActionCallback((acao, tom) => {
         console.log("[GPTicket] Ação selecionada:", acao, tom);
         abrirModal(acao, tom);
     });
@@ -32,7 +32,7 @@ function iniciarGPTicket() {
     });
 
     // Cria os componentes
-    adicionarBotaoIA();
+    addAIButton();
     adicionarPainelIA();
 
     console.log("[GPTicket] Inicialização concluída");
