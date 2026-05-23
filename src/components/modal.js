@@ -1,12 +1,10 @@
-/**
- * Cria e gerencia o modal que aparece quando usuário seleciona uma ação
- * (expandir, resumir, simplificar, etc)
- */
+import { applyTextToEditor } from "../utils/editorManager";
+import "../styles/modal.css";
 
-import { applyTextToEditor } from "../utils/editorManager"
+// ESTADO - Textos simulados por acción
 
-const TEXTOS_GERADOS = {
-    expandir: "Texto expandido mockado...",
+const GENERATED_TEXTS = {
+   expandir: "Texto expandido mockado...",
     resumir: "Texto resumido mockado...",
     simplificar: "Texto simplificado mockado...",
     corrigir: "Texto corrigido mockado...",
@@ -15,149 +13,105 @@ const TEXTOS_GERADOS = {
     "melhorar-tom:Amigável": "Texto amigável mockado...",
 };
 
+// EXPORTS PRINCIPALES
+
 /**
- * Abre o modal com o resultado da ação
- * @param {string} acao - Tipo de ação (expandir, resumir, etc)
- * @param {string} tom - Tom opcional (Profissional, Casual, Amigável)
+ * Abre el modal con el resultado de la acción
+ * @param {string} action - Tipo de acción (expand, summarize, etc)
+ * @param {string} tone - Tono opcional (Profesional, Casual, Amistoso)
  */
-export function abrirModal(acao, tom) {
+export function openModal(action, tone) {
+    const existing = document.querySelector(".ia-modal-overlay");
+    if (existing) existing.remove();
 
-    const antigo = document.querySelector("#ia-modal-overlay");
-    if (antigo) antigo.remove();
+    const key = tone ? `${action}:${tone}` : action;
+    const generatedText = GENERATED_TEXTS[key] || `Texto para ${key}`;
 
-    // Busca o texto gerado
-    const chave = tom ? `${acao}:${tom}` : acao;
-    const textoGerado = TEXTOS_GERADOS[chave] || `Texto para ${chave}`;
+    const overlay = createOverlay();
+    const modal = createModal(generatedText, overlay);
 
-    // Overlay (fundo escuro) 
-    const overlay = document.createElement("div");
-    overlay.id = "ia-modal-overlay";
-    overlay.style.cssText = `
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        z-index: 99999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `;
-
-    // Modal 
-    const modal = document.createElement("div");
-    modal.style.cssText = `
-        width: 580px;
-        max-width: 92vw;
-        background: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        font-family: Arial;
-        display: flex;
-        flex-direction: column;
-    `;
-
-    // Corpo do modal 
-    const corpo = document.createElement("div");
-    corpo.style.cssText = `
-        padding: 28px;
-        white-space: pre-wrap;
-        font-size: 14px;
-        line-height: 1.6;
-        color: #222;
-        max-height: 60vh;
-        overflow: auto;
-        flex: 1;
-    `;
-    corpo.textContent = textoGerado;
-
-    // Rodapé com botões
-    const rodape = document.createElement("div");
-    rodape.style.cssText = `
-        padding: 16px 24px;
-        border-top: 1px solid #eee;
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-    `;
-
-    // Botões
-    const descartar = criarBotao("Descartar");
-    const gerar = criarBotao("Gerar novamente");
-    const substituir = criarBotao("Substituir texto", true);
-
-    descartar.onclick = () => overlay.remove();
-
-    gerar.onclick = () => {
-        corpo.style.opacity = "0.4";
-        setTimeout(() => {
-            corpo.style.opacity = "1";
-        }, 500);
-    };
-
-    substituir.onclick = () => {
-        applyTextToEditor(textoGerado);
-        overlay.remove();
-    };
-
-    rodape.appendChild(descartar);
-    rodape.appendChild(gerar);
-    rodape.appendChild(substituir);
-
-    //  Monta modal 
-    modal.appendChild(corpo);
-    modal.appendChild(rodape);
     overlay.appendChild(modal);
     document.body.appendChild(overlay);
 
-    // Fecha ao clicar fora
-    overlay.onclick = (e) => {
-        if (e.target === overlay) overlay.remove();
+    // Cierra al hacer clic fuera del modal
+    overlay.onclick = (event) => {
+        if (event.target === overlay) overlay.remove();
     };
 }
 
+// HELPERS - CREAR ESTRUCTURA
+
+function createOverlay() {
+    const overlay = document.createElement("div");
+    overlay.classList.add("ia-modal-overlay");
+    return overlay;
+}
+
+function createModal(generatedText, overlay) {
+    const modal = document.createElement("div");
+    modal.classList.add("ia-modal");
+
+    const body = createBody(generatedText);
+    const footer = createFooter(generatedText, body, overlay);
+
+    modal.appendChild(body);
+    modal.appendChild(footer);
+
+    return modal;
+}
+
+function createBody(generatedText) {
+    const body = document.createElement("div");
+    body.classList.add("ia-modal-body");
+    body.textContent = generatedText;
+    return body;
+}
+
+function createFooter(generatedText, body, overlay) {
+    const footer = document.createElement("div");
+    footer.classList.add("ia-modal-footer");
+
+    const discardBtn = createButton("Descartar");
+    const regenerateBtn = createButton("Gerar novamente");
+    const replaceBtn = createButton("Substituir texto", true);
+
+    discardBtn.onclick = () => overlay.remove();
+
+    regenerateBtn.onclick = () => {
+        body.style.opacity = "0.4";
+        setTimeout(() => {
+            body.style.opacity = "1";
+        }, 500);
+    };
+
+    replaceBtn.onclick = () => {
+        applyTextToEditor(generatedText);
+        overlay.remove();
+    };
+
+    footer.appendChild(discardBtn);
+    footer.appendChild(regenerateBtn);
+    footer.appendChild(replaceBtn);
+
+    return footer;
+}
+
+// HELPERS - CREAR ELEMENTOS
+
 /**
- * Cria um botão estilizado
- * @param {string} label
- * @param {boolean} primario - Se true, usa estilo primário (azul)
+ * Crea un botón estilizado
+ * @param {string} label - Texto del botón
+ * @param {boolean} primary - Si es true, usa estilo primario (azul)
  * @returns {HTMLElement}
  */
-function criarBotao(label, primario = false) {
-    const btn = document.createElement("button");
-    btn.textContent = label;
-    btn.style.cssText = `
-        padding: 8px 16px;
-        border-radius: 6px;
-        border: 1px solid #ddd;
-        background: #fff;
-        color: #333;
-        cursor: pointer;
-        font-size: 14px;
-        font-family: Arial;
-        transition: all 0.2s;
-    `;
+function createButton(label, primary = false) {
+    const button = document.createElement("button");
+    button.textContent = label;
+    button.classList.add("ia-modal-btn");
 
-    if (primario) {
-        btn.style.background = "#3b82f6";
-        btn.style.color = "#fff";
-        btn.style.borderColor = "#3b82f6";
+    if (primary) {
+        button.classList.add("ia-modal-btn-primary");
     }
 
-    // Hover
-    btn.addEventListener("mouseenter", () => {
-        if (primario) {
-            btn.style.background = "#2563eb";
-        } else {
-            btn.style.background = "#f5f5f5";
-        }
-    });
-
-    btn.addEventListener("mouseleave", () => {
-        if (primario) {
-            btn.style.background = "#3b82f6";
-        } else {
-            btn.style.background = "#fff";
-        }
-    });
-
-    return btn;
+    return button;
 }

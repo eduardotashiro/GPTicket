@@ -8,7 +8,7 @@
 
 import { addAIButton, defineActionCallback } from "./components/button";
 import { adicionarPainelIA, definirCallbackSugestao } from "./components/panel";
-import { abrirModal } from "./components/modal";
+import { openModal } from "./components/modal";
 
 // ═══════════════════════════════════════
 // INICIALIZAÇÃO PRINCIPAL
@@ -23,7 +23,7 @@ function iniciarGPTicket() {
     // Define o callback do botão: quando usuário clica numa ação, abre modal
     defineActionCallback((acao, tom) => {
         console.log("[GPTicket] Ação selecionada:", acao, tom);
-        abrirModal(acao, tom);
+        openModal(acao, tom);
     });
 
     // Define o callback do painel: quando usuário clica em "Usar sugestão"

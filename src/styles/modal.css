@@ -1,0 +1,90 @@
+/* OVERLAY - Fondo oscuro detrás del modal */
+.ia-modal-overlay {
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.45);
+
+    z-index: 99999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* MODAL - Contenedor principal */
+.ia-modal {
+    width: 580px;
+    max-width: 92vw;
+
+    background: #fff;
+    border-radius: 8px;
+
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* CUERPO - Área de texto generado */
+.ia-modal-body {
+    padding: 28px;
+
+    white-space: pre-wrap;
+
+    font-size: 14px;
+    line-height: 1.6;
+    color: #222;
+
+    max-height: 60vh;
+    overflow: auto;
+
+    flex: 1;
+}
+
+/* PIE DE PÁGINA - Botones de acción */
+.ia-modal-footer {
+    padding: 16px 24px;
+
+    border-top: 1px solid #eee;
+
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+/* BOTONES */
+.ia-modal-btn {
+    padding: 8px 16px;
+
+    border-radius: 6px;
+    border: 1px solid #ddd;
+
+    background: #fff;
+    color: #333;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+
+    transition: background 0.2s;
+}
+
+.ia-modal-btn:hover {
+    background: #f5f5f5;
+}
+
+/* Botón primario (azul) */
+.ia-modal-btn-primary {
+    background: #3b82f6;
+    color: #fff;
+    border-color: #3b82f6;
+}
+
+.ia-modal-btn-primary:hover {
+    background: #2563eb;
+}
