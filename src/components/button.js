@@ -79,18 +79,13 @@ function createDropdownMenu() {
         { label: "Corrigir ortografia e gramática", action: "corrigir" },
     ];
 
-    actions.forEach((item, index) => {
+    actions.forEach((item) => {  
         const btn = createDropdownItem(item.label, () => {
             if (onActionSelected) {
                 onActionSelected(item.action);
             }
         });
         dropdown.appendChild(btn);
-
-        if (index === 1) {
-            const toneSubmenu = createToneSubmenu();
-            dropdown.appendChild(toneSubmenu.wrapper);
-        }
     });
 
     return dropdown;
